@@ -12,20 +12,20 @@ tspan = [0 0.01];
 [t, x] = ode45(@(t, x) state_space(t, x, L, C, R, Vin, D), tspan, x0);
 
 figure;
-subplot(2,1,1);
-plot(t, x(:,1), 'b', 'LineWidth', 1.5);
-xlabel('Tiempo (s)'); ylabel('Corriente i_L (A)');
-grid on; title('Corriente en el inductor');
+plot(t, x(:,1), 'b', 'LineWidth', 1.5, 'DisplayName', 'Corriente i_L'); % Corriente
+hold on;
+plot(t, x(:,2), 'r', 'LineWidth', 1.5, 'DisplayName', 'Voltaje V_c');   % Voltaje
+hold off;
 
-subplot(2,1,2);
-plot(t, x(:,2), 'r', 'LineWidth', 1.5);
-xlabel('Tiempo (s)'); ylabel('Voltaje V_c (V)');
-grid on; title('Voltaje en el capacitor');
-
+xlabel('Tiempo (s)');
+ylabel('Magnitud');
+grid on;
+title('Corriente en el inductor y voltaje en el capacitor');
+legend('show'); % Leyenda para identificar cada curva
 
 function dx = state_space(t, x, L, C, R, Vin, D)
     % Señal PWM: Aproximación como un promedio basado en el ciclo de trabajo
-    d = D; % valor fijo para simplificación
+    d = D; % Valor fijo para simplificación
     
     % Matriz del sistema
     A = [0, -1/L; 1/C, -1/(R*C)];
